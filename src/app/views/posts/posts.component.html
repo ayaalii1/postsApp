@@ -1,0 +1,90 @@
+<form #postForm="ngForm" (ngSubmit)="addPostForm(postForm.value)" class="container">
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input
+      type="text"
+      class="form-control"
+      id="title"
+     name="title"
+     ngModel
+     #title="ngModel"
+     required
+     minlength="3"
+     placeholder="Enter title"
+    />
+    <div class="errors d-flex justify-content-center" *ngIf="title.touched && title.invalid">
+      <div *ngIf="title.errors?.['required']">
+        *Title is required*
+      </div>
+      <div *ngIf="title.errors?.['minlength']">*Title minlength is {{title.errors?.['minlength'].requiredLength}}*</div>
+    </div>
+    
+  </div>
+ 
+  <div class="mb-3">
+    <label for="body" class="form-label">Body</label>
+    <input
+      type="text"
+      class="form-control"
+      id="body"
+     name="body"
+     ngModel
+     #body="ngModel"
+     required
+     minlength="6"
+     placeholder="Enter body"
+    />
+    <div class="errors d-flex justify-content-center" *ngIf="body.touched && body.invalid">
+      <div *ngIf="body.errors?.['required']">
+        *Body is required*
+      </div>
+      <div *ngIf="body.errors?.['minlength']">*Body minlength is {{body.errors?.['minlength'].requiredLength}}*</div>
+    </div>
+    
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="postForm.invalid">Submit</button>
+</form>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Index</th>
+      <th scope="col">ID</th>
+      <th scope="col">Title</th>
+      <th scope="col">Body</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let post of posts;let i=index">
+      <td>{{i}}</td>
+      <td>{{post.id}}</td>
+      <td>{{ post.title }}</td>
+      <td>{{ post.body }}</td>
+      <td>
+        <button
+          class="btn btn-sm btn-primary"
+          routerLink="/posts/{{ post.id }}"
+        >
+          View
+        </button>
+      </td>
+      <td>
+        <button
+          class="btn btn-sm btn-success"
+          routerLink="/editPost/{{ post.id }}"
+        >
+          Update
+        </button>
+      </td>
+      <td>
+        <button
+          class="btn btn-sm btn-danger"
+          (click)="deletePost(post.id,i)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
